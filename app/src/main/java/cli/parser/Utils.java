@@ -15,7 +15,23 @@ import java.util.*;
 
 public class Utils {
 
-    public static String convertPersonListToJSON(final List<Map<String, Object>> personList) {
+    public static String convertMapToJSON(final List<Map<String, Object>> personList) {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.setTimeZone(TimeZone.getDefault());
+        try {
+            mapper.writeValue(out, personList);
+            final byte[] data = out.toByteArray();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement je = JsonParser.parseString(new String(data));
+            return gson.toJson(je);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("");
+    }
+
+    public static String convertMapToHTML(final List<Map<String, Object>> personList) {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setTimeZone(TimeZone.getDefault());
@@ -34,7 +50,7 @@ public class Utils {
     public static Map<String, Object> convertRowToMap(String[] headerRow, String[] row, String dateParserFormat) throws Exception {
         if (row.length == 6) {
             Map<String, Object> map = new HashMap<>();
-            map.put(headerRow[0], row[0]);
+            map.put(headerRow[0], row[0].replace("\"", ""));
             map.put(headerRow[1], row[1]);
             map.put(headerRow[2], row[2]);
             map.put(headerRow[3], row[3]);

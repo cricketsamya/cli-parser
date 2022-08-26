@@ -2,10 +2,7 @@ package cli.parser.factory;
 
 import cli.parser.Utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,14 +10,13 @@ import java.util.Map;
 
 public class PRNToJSONParser implements Parser {
     @Override
-    public String parse(String fileName) {
+    public String parse(List<String> fileContents) {
         final List<Map<String, Object>> list = new ArrayList<>();
         final List<Integer> columnSizes = Arrays.asList(16, 22, 9, 14, 13, 8);
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName, StandardCharsets.ISO_8859_1))) {
-            String line;
+        try {
             String headerRow[] = null;
             boolean headerSkipped = false;
-            while ((line = br.readLine()) != null) {
+            for (String line : fileContents) {
                 if (line.trim().equals("")) {
                     continue;
                 }
@@ -37,7 +33,7 @@ public class PRNToJSONParser implements Parser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Utils.convertPersonListToJSON(list);
+        return Utils.convertMapToJSON(list);
     }
 
     public static String[] splitStringBySizes(String row, List<Integer> columnSizes) {

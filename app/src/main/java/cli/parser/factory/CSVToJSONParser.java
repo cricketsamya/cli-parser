@@ -1,27 +1,23 @@
 package cli.parser.factory;
 
 import cli.parser.Utils;
-import com.opencsv.CSVReader;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.rmi.UnexpectedException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CSVToJSONParser implements Parser {
     @Override
-    public String parse(String fileName) {
+    public String parse(List<String> fileContents) {
         //"app/src/main/resources/Workbook2.csv"
         final List<Map<String, Object>> list = new ArrayList<>();
         String headerRow[] = null;
-        try (final CSVReader reader = new CSVReader(new FileReader(fileName, StandardCharsets.ISO_8859_1))) {
-            List<String[]> r = reader.readAll();
+        try {
             boolean headerSkipped = false;
-            for (final String[] row : r) {
+            for (String value : fileContents) {
+                String[] row = value.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
                 if (!headerSkipped) {
                     headerRow = row;
                     headerSkipped = true;
@@ -38,6 +34,6 @@ public class CSVToJSONParser implements Parser {
             e.printStackTrace();
 
         }
-        return Utils.convertPersonListToJSON(list);
+        return Utils.convertMapToJSON(list);
     }
 }

@@ -1,5 +1,7 @@
 package cli.parser.factory;
 
+import java.util.List;
+
 public interface Parser {
-    public String parse(String fileName);
+    public String parse(List<String> fileContents);
 }
