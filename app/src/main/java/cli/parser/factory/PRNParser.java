@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class PRNToJSONParser implements Parser {
+public class PRNParser implements Parser {
     @Override
-    public String parse(List<String> fileContents) {
+    public List<Map<String, Object>> parse(List<String> fileContents) {
         final List<Map<String, Object>> list = new ArrayList<>();
         final List<Integer> columnSizes = Arrays.asList(16, 22, 9, 14, 13, 8);
         try {
@@ -33,7 +33,7 @@ public class PRNToJSONParser implements Parser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Utils.convertMapToJSON(list);
+        return list;
     }
 
     public static String[] splitStringBySizes(String row, List<Integer> columnSizes) {

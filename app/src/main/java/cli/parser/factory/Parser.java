@@ -1,7 +1,8 @@
 package cli.parser.factory;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Parser {
-    public String parse(List<String> fileContents);
+    public List<Map<String, Object>> parse(List<String> fileContents);
 }

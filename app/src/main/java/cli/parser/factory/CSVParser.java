@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CSVToJSONParser implements Parser {
+public class CSVParser implements Parser {
     @Override
-    public String parse(List<String> fileContents) {
-        //"app/src/main/resources/Workbook2.csv"
+    public List<Map<String, Object>> parse(List<String> fileContents) {
         final List<Map<String, Object>> list = new ArrayList<>();
         String headerRow[] = null;
         try {
@@ -34,6 +33,6 @@ public class CSVToJSONParser implements Parser {
             e.printStackTrace();
 
         }
-        return Utils.convertMapToJSON(list);
+        return list;
     }
 }
