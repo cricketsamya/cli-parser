@@ -30,4 +30,8 @@ jobs:
         distribution: 'temurin'
     - name: Build with Gradle
       run: ./gradlew clean customFatJar --no-daemon
+    - name: Run script file
+      run: |
+       cat ./Workbook2.csv| java -jar app/build/libs/all-in-one-jar.jar csv json
+      shell: bash
       
