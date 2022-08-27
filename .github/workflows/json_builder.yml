@@ -26,7 +26,6 @@ jobs:
     - name: Run script file
       run: |
        cat ./Workbook2.csv| java -jar app/build/libs/all-in-one-jar.jar csv json
-       |
        cat ./Workbook2.prn| java -jar app/build/libs/all-in-one-jar.jar prn json
       shell: bash
       
