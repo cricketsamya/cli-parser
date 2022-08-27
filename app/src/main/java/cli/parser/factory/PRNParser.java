@@ -1,18 +1,28 @@
 package cli.parser.factory;
 
-import cli.parser.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class PRNParser implements Parser {
+public class PRNParser extends AbstractParser implements Parser {
+    private static final Logger LOG = LoggerFactory.getLogger(PRNParser.class);
+    private static final String DATE_FORMAT = "yyyyMMdd";
+    private static final int SIZE_NAME = 16;
+    private static final int SIZE_ADDRESS = 22;
+    private static final int SIZE_POSTCODE = 9;
+    private static final int SIZE_PHONE = 14;
+    private static final int SIZE_CREDIT_LIMIT = 13;
+    private static final int SIZE_BIRTHDAY = 8;
+
     @Override
-    public List<Map<String, Object>> parse(List<String> fileContents) {
-        final List<Map<String, Object>> list = new ArrayList<>();
-        final List<Integer> columnSizes = Arrays.asList(16, 22, 9, 14, 13, 8);
+    public List<Map<String, Object>> parse(List<String> fileContents, Integer currencyDivisor) {
+        final List<Map<String, Object>> listOfParsedData = new ArrayList<>();
+        final List<Integer> columnSizes = Arrays.asList(SIZE_NAME, SIZE_ADDRESS, SIZE_POSTCODE, SIZE_PHONE, SIZE_CREDIT_LIMIT, SIZE_BIRTHDAY);
         try {
             String headerRow[] = null;
             boolean headerSkipped = false;
@@ -26,14 +36,12 @@ public class PRNParser implements Parser {
                     headerSkipped = true;
                     continue;
                 }
-                list.add(Utils.convertRowToMap(headerRow, rowSplit, "yyyyMMdd"));
+                listOfParsedData.add(convertRowToMap(headerRow, rowSplit, DATE_FORMAT, currencyDivisor));
             }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ParseException e) {
+            LOG.error("Paring error in the file", e);
         }
-        return list;
+        return listOfParsedData;
     }
 
     public static String[] splitStringBySizes(String row, List<Integer> columnSizes) {

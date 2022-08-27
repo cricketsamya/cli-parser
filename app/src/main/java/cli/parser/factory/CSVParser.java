@@ -1,17 +1,20 @@
 package cli.parser.factory;
 
-import cli.parser.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CSVParser implements Parser {
+public class CSVParser extends AbstractParser implements Parser {
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
+    private static final Logger LOG = LoggerFactory.getLogger(CSVParser.class);
+
     @Override
-    public List<Map<String, Object>> parse(List<String> fileContents) {
-        final List<Map<String, Object>> list = new ArrayList<>();
+    public List<Map<String, Object>> parse(final List<String> fileContents, final Integer currencyDivisor) {
+        final List<Map<String, Object>> listOfParsedData = new ArrayList<>();
         String headerRow[] = null;
         try {
             boolean headerSkipped = false;
@@ -22,17 +25,11 @@ public class CSVParser implements Parser {
                     headerSkipped = true;
                     continue;
                 }
-                list.add(Utils.convertRowToMap(headerRow, row, "dd/MM/yyyy"));
+                listOfParsedData.add(convertRowToMap(headerRow, row, DATE_FORMAT, currencyDivisor));
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
+        } catch (final ParseException e) {
+            LOG.error("Paring error in the file", e);
         }
-        return list;
+        return listOfParsedData;
     }
 }
