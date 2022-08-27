@@ -1,6 +1,8 @@
 package cli.parser.factory;
 
 import cli.parser.exception.CustomParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,8 +18,9 @@ public abstract class AbstractParser {
     private static final int INDEX_CREDIT_LIMIT = 4;
     private static final int INDEX_BIRTHDAY = 5;
     private static final int MAX_NUMBER_OF_COLUMNS = 6;
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractParser.class);
 
-    public static Map<String, Object> convertRowToMap(String[] headerRow, String[] row, String dateParserFormat, Integer currencyDivisor) throws ParseException {
+    public Map<String, Object> convertRowToMap(String[] headerRow, String[] row, String dateParserFormat, Integer currencyDivisor) {
         if (row.length == MAX_NUMBER_OF_COLUMNS) {
             Map<String, Object> mapOfRow = new HashMap<>();
             mapOfRow.put(headerRow[INDEX_NAME], row[INDEX_NAME].replace("\"", ""));
@@ -31,8 +34,13 @@ public abstract class AbstractParser {
         throw new IllegalStateException("Length of data is not 6");
     }
 
-    public static Date convertToDate(String s, String dateFormat) throws ParseException {
+    public Date convertToDate(String s, String dateFormat) {
         final SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
-        return formatter.parse(s);
+        try {
+            return formatter.parse(s);
+        } catch (ParseException e) {
+            LOG.error("Error parsing date " + s + " dateformat " + dateFormat, e);
+        }
+        throw new IllegalStateException("Error parsing date");
     }
 }

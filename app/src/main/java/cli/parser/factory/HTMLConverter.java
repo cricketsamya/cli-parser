@@ -22,11 +22,13 @@ public class HTMLConverter implements Converter {
         htmlTable.append("<html><head></head><body><table>");
         htmlTable.append(addHeaders(parsedData));
         for (Map<String, Object> rows : parsedData) {
+            htmlTable.append("<tr>");
             for (String key : rows.keySet()) {
                 htmlTable.append("<td>");
                 htmlTable.append(rows.get(key));
-                htmlTable.append("<td/>");
+                htmlTable.append("</td>");
             }
+            htmlTable.append("</tr>");
         }
         htmlTable.append("</table></body></html>");
         final Document doc = Jsoup.parseBodyFragment(htmlTable.toString());
@@ -36,11 +38,11 @@ public class HTMLConverter implements Converter {
     private StringBuilder addHeaders(final List<Map<String, Object>> data) {
         final StringBuilder header = new StringBuilder();
         header.append("<tr>");
-        final Map<String, Object> row = data.get(1);
+        final Map<String, Object> row = data.get(0);
         for (String key : row.keySet()) {
             header.append("<th>");
             header.append(key);
-            header.append("<th/>");
+            header.append("</th>");
         }
         header.append("</tr>");
         return header;

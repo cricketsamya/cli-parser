@@ -1,16 +1,11 @@
 package cli.parser.factory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class PRNParser extends AbstractParser implements Parser {
-    private static final Logger LOG = LoggerFactory.getLogger(PRNParser.class);
     private static final String DATE_FORMAT = "yyyyMMdd";
     private static final int SIZE_NAME = 16;
     private static final int SIZE_ADDRESS = 22;
@@ -23,23 +18,19 @@ public class PRNParser extends AbstractParser implements Parser {
     public List<Map<String, Object>> parse(List<String> fileContents, Integer currencyDivisor) {
         final List<Map<String, Object>> listOfParsedData = new ArrayList<>();
         final List<Integer> columnSizes = Arrays.asList(SIZE_NAME, SIZE_ADDRESS, SIZE_POSTCODE, SIZE_PHONE, SIZE_CREDIT_LIMIT, SIZE_BIRTHDAY);
-        try {
-            String headerRow[] = null;
-            boolean headerSkipped = false;
-            for (String line : fileContents) {
-                if (line.trim().equals("")) {
-                    continue;
-                }
-                String[] rowSplit = splitStringBySizes(line, columnSizes);
-                if (!headerSkipped) {
-                    headerRow = rowSplit;
-                    headerSkipped = true;
-                    continue;
-                }
-                listOfParsedData.add(convertRowToMap(headerRow, rowSplit, DATE_FORMAT, currencyDivisor));
+        String headerRow[] = null;
+        boolean headerSkipped = false;
+        for (String line : fileContents) {
+            if (line.trim().equals("")) {
+                continue;
             }
-        } catch (ParseException e) {
-            LOG.error("Paring error in the file", e);
+            String[] rowSplit = splitStringBySizes(line, columnSizes);
+            if (!headerSkipped) {
+                headerRow = rowSplit;
+                headerSkipped = true;
+                continue;
+            }
+            listOfParsedData.add(convertRowToMap(headerRow, rowSplit, DATE_FORMAT, currencyDivisor));
         }
         return listOfParsedData;
     }
