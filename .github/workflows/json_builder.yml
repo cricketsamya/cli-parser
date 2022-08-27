@@ -1,10 +1,8 @@
-name: Generate JSON from JSON from CSV and PRN
+name: Generate JSON from CSV and PRN
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+    branches: [ main ]
 
 permissions:
   contents: read

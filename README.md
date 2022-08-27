@@ -36,3 +36,16 @@ cat ./Workbook2.csv| java -jar app/build/libs/all-in-one-jar.jar csv json
 ```shell
 cat ./Workbook2.prn| java -jar app/build/libs/all-in-one-jar.jar prn json
 ```
+
+### Github Actions
+There are 4 workflows added to the repo.
+- Build with Gradle
+  - This builds the FAT jar
+- Generate HTML from CSV and PRN
+  - This on demand action to generate HTML
+- Generate JSON from CSV and PRN
+  - This on demand action to generate JSON
+- Test JSON Converter
+  - This Actions tests outputs of both CSV and PRN with JSON format
+- Test HTML Converter
+  - This Actions tests outputs of both CSV and PRN with HTML format
