@@ -4,7 +4,7 @@ A command line utility that converts PRN and CSV files to JSON or HTML Table.
 
 # How to build
 
-The uility is built using Gradle Wrapper using following command.
+The utility is built using Gradle Wrapper using following command.
 
 ```shell
 ./gradlew clean customFatJar
