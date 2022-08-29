@@ -1,4 +1,4 @@
-name: Test JSON Converter
+name: Test HTML Converter
 
 on:
   workflow_dispatch:
