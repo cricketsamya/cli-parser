@@ -1,10 +1,7 @@
 package cli.parser.factory;
 
-import cli.parser.Application;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +33,7 @@ public class CSVParserTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
     @Test
     public void assureCSVParserFailsWhenIncorrectDatePassed() {
         final CSVParser csvParserTest = new CSVParser();

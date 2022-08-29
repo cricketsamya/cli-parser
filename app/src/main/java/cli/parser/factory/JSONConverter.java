@@ -26,12 +26,12 @@ public class JSONConverter implements Converter {
 
     @Override
     public String convert(List<String> fileContents) {
-        final List<Map<String, Object>> personList = parser.parse(fileContents, currencyDivisor);
+        final List<Map<String, Object>> mapList = parser.parse(fileContents, currencyDivisor);
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setTimeZone(TimeZone.getDefault());
         try {
-            mapper.writeValue(out, personList);
+            mapper.writeValue(out, mapList);
             final byte[] data = out.toByteArray();
             final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             final JsonElement je = JsonParser.parseString(new String(data));

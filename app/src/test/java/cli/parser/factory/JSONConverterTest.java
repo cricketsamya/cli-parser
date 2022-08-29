@@ -5,8 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class JSONConverterTest {
 
@@ -48,5 +47,20 @@ public class JSONConverterTest {
                         "    \"Name\": \"Anderson, Paul\"\n" +
                         "  }\n" + "]"
                 , result);
+    }
+
+    @Test
+    public void assureJSONConverterFailsWhenIncorrectDatePassed() {
+        final JSONConverter jsonConverter = new JSONConverter(new CSVParser(), 1);
+        List<String> fileContent = new ArrayList<>();
+        fileContent.add("Name,Address,Postcode,Phone,Credit Limit,Birthday");
+        fileContent.add("\"Johnson, John\",Voorstraat 32,3122gg,020 3849381,1000000,01/01/fff");
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            jsonConverter.convert(fileContent);
+        });
+        String expectedMessage = "Error parsing date";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }

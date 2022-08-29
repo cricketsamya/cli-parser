@@ -24,7 +24,7 @@ public class PRNParser extends AbstractParser implements Parser {
             if (line.trim().equals("")) {
                 continue;
             }
-            String[] rowSplit = splitStringBySizes(line, columnSizes);
+            final String[] rowSplit = splitStringBySizes(line, columnSizes);
             if (!headerSkipped) {
                 headerRow = rowSplit;
                 headerSkipped = true;
@@ -35,14 +35,14 @@ public class PRNParser extends AbstractParser implements Parser {
         return listOfParsedData;
     }
 
-    public static String[] splitStringBySizes(String row, List<Integer> columnSizes) {
-        List<String> list = new ArrayList<>();
-        int chunkStart = 0;
-        int chunkEnd = 0;
-        for (Integer length : columnSizes) {
-            chunkStart = chunkEnd;
-            chunkEnd = chunkStart + length;
-            String dataChunk = row.substring(chunkStart, chunkEnd);
+    public static String[] splitStringBySizes(final String row, final List<Integer> columnSizes) {
+        final List<String> list = new ArrayList<>();
+        int stringStart;
+        int stringEnd = 0;
+        for (final Integer length : columnSizes) {
+            stringStart = stringEnd;
+            stringEnd = stringStart + length;
+            final String dataChunk = row.substring(stringStart, stringEnd);
             list.add(dataChunk.trim());
         }
         return list.toArray(new String[0]);
